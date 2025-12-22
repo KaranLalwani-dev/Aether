@@ -1,5 +1,6 @@
 package com.karandev.aether.entity;
 
+import com.karandev.aether.enums.MessageRole;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

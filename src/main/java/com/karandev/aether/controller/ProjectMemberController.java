@@ -2,6 +2,7 @@ package com.karandev.aether.controller;
 
 import com.karandev.aether.dto.member.InviteMemberRequest;
 import com.karandev.aether.dto.member.MemberResponse;
+import com.karandev.aether.dto.member.UpdateMemberRoleRequest;
 import com.karandev.aether.service.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,13 +31,13 @@ public class ProjectMemberController {
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<MemberResponse> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody InviteMemberRequest request) {
+    public ResponseEntity<MemberResponse> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody UpdateMemberRoleRequest request) {
         Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId));
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<MemberResponse> deleteProjectMember(@PathVariable Long projectId, @PathVariable Long memberId) {
+    public ResponseEntity<MemberResponse> deleteMember(@PathVariable Long projectId, @PathVariable Long memberId) {
         Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.deleteProjectMember(projectId, memberId, userId));
     }

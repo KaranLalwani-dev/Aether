@@ -1,6 +1,7 @@
 package com.karandev.aether.entity;
 
 
+import com.karandev.aether.enums.SubscriptionStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

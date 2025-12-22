@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/projects")
 public class ProjectController {
 
     private ProjectService projectService;
+
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
