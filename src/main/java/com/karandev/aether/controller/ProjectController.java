@@ -4,23 +4,22 @@ import com.karandev.aether.dto.project.ProjectRequest;
 import com.karandev.aether.dto.project.ProjectResponse;
 import com.karandev.aether.dto.project.ProjectSummaryResponse;
 import com.karandev.aether.service.ProjectService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/projects")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ProjectController {
 
-    private ProjectService projectService;
-
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
+    ProjectService projectService;
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
