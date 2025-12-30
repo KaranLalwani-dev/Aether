@@ -4,10 +4,16 @@ import com.karandev.aether.dto.project.ProjectRequest;
 import com.karandev.aether.dto.project.ProjectResponse;
 import com.karandev.aether.dto.project.ProjectSummaryResponse;
 import com.karandev.aether.entity.Project;
+import com.karandev.aether.entity.ProjectMember;
+import com.karandev.aether.entity.ProjectMemberId;
 import com.karandev.aether.entity.User;
+import com.karandev.aether.enums.ProjectRole;
+import com.karandev.aether.error.ResourceNotFoundException;
 import com.karandev.aether.mapper.ProjectMapper;
+import com.karandev.aether.repository.ProjectMemberRepository;
 import com.karandev.aether.repository.ProjectRepository;
 import com.karandev.aether.repository.UserRepository;
+import com.karandev.aether.security.AuthUtil;
 import com.karandev.aether.service.ProjectService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -27,39 +33,51 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
     UserRepository userRepository;
     ProjectMapper projectMapper;
+    ProjectMemberRepository projectMemberRepository;
+    AuthUtil authUtil;
 
     @Override
-    public List<ProjectSummaryResponse> getUserProjects(Long userId) {
-
+    public List<ProjectSummaryResponse> getUserProjects() {
+        Long userId = authUtil.getCurrentUserId();
         var projects = projectRepository.findAllAccessibleByUser(userId);
         return projectMapper.toListOfProjectSummaryResponse(projects);
     }
 
     @Override
-    public ProjectResponse getUserProjectById(Long id, Long userId) {
-
+    public ProjectResponse getUserProjectById(Long id) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(id, userId);
         return projectMapper.toProjectResponse(project);
     }
 
     @Override
-    public ProjectResponse createProject(ProjectRequest request, Long userId) {
-
-        User owner = userRepository.findById(userId).orElseThrow();
-
+    public ProjectResponse createProject(ProjectRequest request) {
+        Long userId = authUtil.getCurrentUserId();
+        User owner = userRepository.getReferenceById(userId);
         Project project = Project.builder()
                 .name(request.name())
-                .owner(owner)
                 .isPublic(false)
                 .build();
 
-        Project savedProject = projectRepository.save(project);
-        return projectMapper.toProjectResponse(savedProject);
+        project = projectRepository.save(project);
+
+        ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
+        ProjectMember projectMember = ProjectMember.builder()
+                .id(projectMemberId)
+                .projectRole(ProjectRole.OWNER)
+                .user(owner)
+                .invitedAt(Instant.now())
+                .acceptedAt(Instant.now())
+                .project(project)
+                .build();
+        projectMemberRepository.save(projectMember);
+
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
-    public ProjectResponse updateProject(Long id, ProjectRequest request, Long userId) {
-
+    public ProjectResponse updateProject(Long id, ProjectRequest request) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(id, userId);
         project.setName(request.name());
         project = projectRepository.save(project);
@@ -68,12 +86,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void softDelete(Long id, Long userId) {
-
+    public void softDelete(Long id) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(id, userId);
-        if(!project.getOwner().getId().equals(userId)) {
-            throw new RuntimeException("You are not allowed to delete the project");
-        }
         project.setDeletedAt(Instant.now());
         projectRepository.save(project);
     }
@@ -81,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
     /// INTERNAL FUNCTIONS
 
     public Project getAccessibleProjectById(Long projectId, Long userId) {
-
-        return projectRepository.findAccessibleProjectById(projectId, userId).orElseThrow();
+        return projectRepository.findAccessibleProjectById(projectId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId.toString()));
     }
 }

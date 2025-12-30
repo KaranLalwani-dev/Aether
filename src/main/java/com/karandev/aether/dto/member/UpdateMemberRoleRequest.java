@@ -1,8 +1,9 @@
 package com.karandev.aether.dto.member;
 
 import com.karandev.aether.enums.ProjectRole;
+import jakarta.validation.constraints.NotNull;
 
 public record UpdateMemberRoleRequest(
-        ProjectRole role
+        @NotNull ProjectRole role
 ) {
 }
