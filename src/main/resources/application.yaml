@@ -17,13 +17,13 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
-jwt:
-  secret-key: ddgyg2ujdjbjrkmvtjbnykhyjkjujuljpuojjitugefywydghwdbjhwqdgewfgwfjiwehfwiuefhuwhiurhguejgierojgout4oinrewjknfkjwefhwei
-
-stripe:
-  api:
-    secret: sk_test_51SmfdeAKwY4EkhYGVPcUy8SusiTBTphGX5qADVfXei59WJsdabye3Qlgwutg7UphAwF71s4MUTYP1coAQQwQPiK500Xg3d02Pt
-  webhook:
-    secret: whsec_9d7422ef5297821511c36c603773c588784c90190ebd6391ab563c9b3b4c836f
+#jwt:
+#  secret-key:
+#
+#stripe:
+#  api:
+#    secret:
+#  webhook:
+#    secret:
 
 client.url: http://localhost:8080
