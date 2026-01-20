@@ -11,7 +11,7 @@ public interface PaymentProcessor {
 
     CheckoutResponse createCheckoutSessionUrl(CheckoutRequest request);
 
-    PortalResponse openCustomerPortal(Long userId);
+    PortalResponse openCustomerPortal();
 
     void handleWebhookEvent(String type, StripeObject stripeObject, Map<String, String> metaData);
 }

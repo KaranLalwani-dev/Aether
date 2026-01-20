@@ -8,6 +8,7 @@ import com.karandev.aether.entity.ProjectMember;
 import com.karandev.aether.entity.ProjectMemberId;
 import com.karandev.aether.entity.User;
 import com.karandev.aether.enums.ProjectRole;
+import com.karandev.aether.error.BadRequestException;
 import com.karandev.aether.error.ResourceNotFoundException;
 import com.karandev.aether.mapper.ProjectMapper;
 import com.karandev.aether.repository.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.karandev.aether.repository.ProjectRepository;
 import com.karandev.aether.repository.UserRepository;
 import com.karandev.aether.security.AuthUtil;
 import com.karandev.aether.service.ProjectService;
+import com.karandev.aether.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
+    SubscriptionService subscriptionService;
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
@@ -54,6 +57,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
+
+        if(!subscriptionService.canCreateNewProject()) {
+            throw new BadRequestException("User cannot create a new project with the current plan, upgrade plan now.");
+        }
         Long userId = authUtil.getCurrentUserId();
         User owner = userRepository.getReferenceById(userId);
         Project project = Project.builder()
