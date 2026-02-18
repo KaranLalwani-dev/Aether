@@ -16,6 +16,7 @@ import com.karandev.aether.repository.ProjectRepository;
 import com.karandev.aether.repository.UserRepository;
 import com.karandev.aether.security.AuthUtil;
 import com.karandev.aether.service.ProjectService;
+import com.karandev.aether.service.ProjectTemplateService;
 import com.karandev.aether.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -39,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
     SubscriptionService subscriptionService;
+    ProjectTemplateService projectTemplateService;
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
@@ -80,6 +82,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }

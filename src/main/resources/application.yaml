@@ -3,9 +3,9 @@ spring:
     name: Aether
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/testDB
-    username: postgres
-    password: Karan@2068k
+    url: jdbc:postgresql://localhost:9010/pgvector-test
+    username: user
+    password: password
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -15,23 +15,34 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
 
   ai:
     openai:
       api-key:
-      base-url: https://openrouter.ai/api
       chat:
         options:
-          model: openai/gpt-5.2-codex
-          temprature: 0.0
-#jwt:
-#  secret-key:
-#
-#stripe:
-#  api:
-#    secret:
-#  webhook:
-#    secret:
+          model: gpt-4o-mini
+          temperature: 0.0
+jwt:
+  secret-key:
+
+stripe:
+  api:
+    secret:
+  webhook:
+    secret:
 
 client.url: http://localhost:8080
+
+logging:
+  level:
+    org.springframework.ai:
+      chat.client: DEBUG
+    org.springframework.security: DEBUG
+
+minio:
+  url: http://localhost:9000          # or minio:9000 if inside docker network
+  access-key:
+  secret-key:
+  project-bucket:

@@ -1,5 +1,6 @@
 package com.karandev.aether.service;
 
+import com.karandev.aether.dto.project.FileNode;
 import com.karandev.aether.dto.project.ProjectRequest;
 import com.karandev.aether.dto.project.ProjectResponse;
 import com.karandev.aether.dto.project.ProjectSummaryResponse;
@@ -17,4 +18,5 @@ public interface ProjectService {
     ProjectResponse updateProject(Long id, ProjectRequest request);
 
     void softDelete(Long id);
+
 }

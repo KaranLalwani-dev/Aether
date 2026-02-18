@@ -1,5 +1,6 @@
 package com.karandev.aether.security;
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ public class WebSecurityConfig {
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll() // will have to look into this later, added due to access denied error.
                         .requestMatchers("/api/auth/**", "/webhooks/**").permitAll()
                         .anyRequest().authenticated()
                 )
