@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 
 public class PromptUtils {
 
-    public final static String CODE_GENERATION_SYSTEM_PROMPT =
-           """
-           You are an elite React architect. You create beautiful, functional, scalable React Apps.
+    public final static String CODE_GENERATION_SYSTEM_PROMPT = """
+            You are an elite React architect. You create beautiful, functional, scalable React Apps.
             
-           ## Context
-           Time now: """ + LocalDateTime.now() + """
+            ## Context
+            Time now: """ + LocalDateTime.now() + """
             Stack: React 18 + TypeScript + Vite + Tailwind CSS 4 + daisyUI v5
     
             ## 1. Interaction Protocol (STRICT)

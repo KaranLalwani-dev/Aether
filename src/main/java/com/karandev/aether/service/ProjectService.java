@@ -8,15 +8,13 @@ import com.karandev.aether.dto.project.ProjectSummaryResponse;
 import java.util.List;
 
 public interface ProjectService {
-
     List<ProjectSummaryResponse> getUserProjects();
 
-    ProjectResponse getUserProjectById(Long id);
+    ProjectSummaryResponse getUserProjectById(Long id);
 
     ProjectResponse createProject(ProjectRequest request);
 
     ProjectResponse updateProject(Long id, ProjectRequest request);
 
     void softDelete(Long id);
-
 }

@@ -1,11 +1,15 @@
 package com.karandev.aether.dto.project;
 
+import com.karandev.aether.enums.ProjectRole;
+
 import java.time.Instant;
 
 public record ProjectSummaryResponse(
         Long id,
         String name,
         Instant createdAt,
-        Instant updatedAt
+        Instant updatedAt,
+        ProjectRole role
 ) {
 }
+

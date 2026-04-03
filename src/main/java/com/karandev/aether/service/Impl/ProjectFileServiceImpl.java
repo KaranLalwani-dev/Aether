@@ -2,6 +2,7 @@ package com.karandev.aether.service.Impl;
 
 import com.karandev.aether.dto.project.FileContentResponse;
 import com.karandev.aether.dto.project.FileNode;
+import com.karandev.aether.dto.project.FileTreeResponse;
 import com.karandev.aether.entity.Project;
 import com.karandev.aether.entity.ProjectFile;
 import com.karandev.aether.error.ResourceNotFoundException;
@@ -35,16 +36,14 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     private final ProjectFileMapper projectFileMapper;
 
     @Value("${minio.project-bucket}")
-    private String getProjectBucket;
+    private String projectBucket;
     private static final String BUCKET_NAME = "projects";
 
-    @Value("${minio.project-bucket}")
-    private String projectBucket;
-
     @Override
-    public List<FileNode> getFileTree(Long projectId) {
-        List<ProjectFile> projectFiles = projectFileRepository.findByProjectId(projectId);
-        return projectFileMapper.toListOfFileNode(projectFiles);
+    public FileTreeResponse getFileTree(Long projectId) {
+        List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
+        List<FileNode> projectFileNodes = projectFileMapper.toListOfFileNode(projectFileList);
+        return new FileTreeResponse(projectFileNodes);
     }
 
     @Override

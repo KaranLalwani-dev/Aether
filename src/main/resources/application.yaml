@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:9010/pgvector-test
-    username: user
-    password: password
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,9 +20,11 @@ spring:
   ai:
     openai:
       api-key:
+      base-url: https://openrouter.ai/api
       chat:
         options:
-          model: gpt-4o-mini
+          # model: x-ai/grok-code-fast-1
+          model: google/gemini-3-flash-preview
           temperature: 0.0
 jwt:
   secret-key:
@@ -39,7 +41,6 @@ logging:
   level:
     org.springframework.ai:
       chat.client: DEBUG
-    org.springframework.security: DEBUG
 
 minio:
   url: http://localhost:9000          # or minio:9000 if inside docker network
