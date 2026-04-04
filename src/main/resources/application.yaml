@@ -46,4 +46,4 @@ minio:
   url: http://localhost:9000          # or minio:9000 if inside docker network
   access-key:
   secret-key:
-  project-bucket:
+  project-bucket: projects

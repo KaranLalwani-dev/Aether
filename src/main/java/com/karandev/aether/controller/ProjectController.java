@@ -1,8 +1,10 @@
 package com.karandev.aether.controller;
 
+import com.karandev.aether.dto.deploy.DeployResponse;
 import com.karandev.aether.dto.project.ProjectRequest;
 import com.karandev.aether.dto.project.ProjectResponse;
 import com.karandev.aether.dto.project.ProjectSummaryResponse;
+import com.karandev.aether.service.DeploymentService;
 import com.karandev.aether.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,6 +23,8 @@ import java.util.List;
 public class ProjectController {
 
     ProjectService projectService;
+    private final DeploymentService deploymentService;
+
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
@@ -46,5 +50,10 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         projectService.softDelete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/deploy")
+    public ResponseEntity<DeployResponse> deployProject(@PathVariable Long id) {
+        return ResponseEntity.ok(deploymentService.deploy(id));
     }
 }
