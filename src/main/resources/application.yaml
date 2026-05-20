@@ -1,13 +1,11 @@
 spring:
   application:
     name: Aether
-
   datasource:
     url: jdbc:postgresql://localhost:9010/pgvector-test
-    username:
-    password:
+    username: user
+    password: password
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,34 +14,32 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
   ai:
     openai:
-      api-key:
+      api-key: ${OPENROUTER_API_KEY}
       base-url: https://openrouter.ai/api
       chat:
         options:
-          # model: x-ai/grok-code-fast-1
           model: google/gemini-3-flash-preview
           temperature: 0.0
 jwt:
-  secret-key:
-
+  secret-key: ${JWT_SECRET}
 stripe:
   api:
-    secret:
+    secret: ${STRIPE_API_SECRET}
   webhook:
-    secret:
-
+    secret: ${STRIPE_WEBHOOK_SECRET}
 client.url: http://localhost:8080
-
 logging:
   level:
     org.springframework.ai:
       chat.client: DEBUG
-
 minio:
-  url: http://localhost:9000          # or minio:9000 if inside docker network
-  access-key:
-  secret-key:
+  url: http://localhost:9000
+  access-key: ${MINIO_ACCESS_KEY}
+  secret-key: ${MINIO_SECRET_KEY}
   project-bucket: projects
